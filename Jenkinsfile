@@ -7,34 +7,34 @@ pipeline {
         stage('Build docker image') {
             steps {  
                 echo "Building Docker image..."
-                sh 'docker build -t jenish007/flaskapp:$BUILD_NUMBER .'
+                sh 'docker build -t lalitha238/flaskapp:$BUILD_NUMBER .'
             }
         }
         stage('login to dockerhub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'test1', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                     echo "Logging in to Docker Hub..."
-                    sh "docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
+                    sh "docker login -u lalitha238 -p Lalitha@123"
                 }
             }
         }
         stage('push image') {
             steps {
                 echo "Pushing Docker image to Docker Hub..."
-                sh 'docker push jenish007/flaskapp:$BUILD_NUMBER'
+                sh 'docker push lalitha238/flaskapp:$BUILD_NUMBER'
             }
         }
         stage('Deploy to Staging') {
             steps {
                 // Pull the latest image from Docker Hub
-                sh 'docker pull jenish007/flaskapp:$BUILD_NUMBER'
+                sh 'docker pull lalitha238/flaskapp:$BUILD_NUMBER'
 
                 // Stop and remove any existing containers
                 sh 'docker stop myapp-container || true'
                 sh 'docker rm myapp-container || true'
 
                 // Run the new container with the latest image
-                sh 'docker run -d --name myapp-container -p 8000:8000 jenish007/flaskapp:$BUILD_NUMBER'
+                sh 'docker run -d --name myapp-container -p 8000:8000 lalitha238/flaskapp:$BUILD_NUMBER'
             }
         }
     }
